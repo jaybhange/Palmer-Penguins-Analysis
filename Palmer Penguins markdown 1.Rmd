@@ -1,0 +1,170 @@
+---
+title: "Palmer Penguins Project"
+author: "Jay"
+date: '2023-01-02'
+output: html_document
+---
+
+## Introduction and background
+
+We will install and load palmerpenguins dataset to organize, analyze, and visual the relationship between different values.
+
+## Installing and loading R packages
+
+You can always install and load packages along the way as you may discover you need different packages after you start your analysis. You can install and load packages now, if another packages needed further, you can do that with specific lines of code anyway.
+
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+
+install.packages("ggplot2")
+library(tidyverse)
+
+install.packages("palmerpenguins")
+library(palmerpenguins)
+```
+
+Exploring key data and getting an overview of what table contents.
+
+```{r}
+head(penguins)
+```
+
+## Viewing colummn names of dataset
+
+Take a loot at all the columns of daily_activity data.
+
+```{r}
+colnames(penguins)
+
+glimpse(penguins)
+```
+
+## Viewing datatypes of the dataset
+
+Structure of the object and information about the class, length and content of each column.
+
+```{r}
+str(penguins)
+```
+
+## Arranging bill length in ascending order
+
+Arrange function lets you reorder the rows of a tibble in ascending and descending order.
+
+```{r}
+penguins %>% 
+  arrange(bill_length_mm)
+```
+
+## Summarizing bill length by mean and group by island
+
+The summarize function reduces a data frame to a summary of just one value, these summaries are calculated by grouping observations also.
+
+```{r}
+penguins %>% 
+  group_by(island) %>% 
+  drop_na() %>% 
+  summarise(mean_bill_length_mm = mean(bill_length_mm))
+```
+
+## Summarizing bill length by mean and group by sex
+
+```{r}
+penguins %>% 
+  group_by(sex) %>% 
+  drop_na() %>% 
+  summarise(mean_bill_length_mm = mean(bill_length_mm))
+```
+
+## Summarizing bill length by min and max, and group by island
+
+```{r}
+penguins %>% 
+  group_by(island) %>% 
+  drop_na() %>% 
+  summarise(min_bill_length_mm = min(bill_length_mm), 
+            max_bill_length_mm = max(bill_length_mm))
+```
+
+
+## Summarizing bill length by min and max, and group by sex
+
+```{r}
+penguins %>% 
+  group_by(sex) %>% 
+  drop_na() %>% 
+  summarise(min_bill_length_mm = min(bill_length_mm), 
+            max_bill_length_mm = max(bill_length_mm))
+```
+
+## Visualizing data with ggplot
+
+Plotting flipper length and body mass
+
+What is the relationship between penguins flipper length and body mass? 
+
+The bigger the flipper length of penguin is, the bigger the body mass of penguin will be.
+
+```{r}
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x = flipper_length_mm, y = body_mass_g))
+```
+
+## Adding color, shape, and title to the plot
+
+Labs function lets you create the plot title and subtitle to explain the main findings.
+
+```{r}
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species, shape = species)) +
+  labs(title = "Flipper length in mm vs. body mass in g")
+```
+
+
+## Adding geom smooth function
+
+geom_smooth() adds a trend line over an existing plot.
+
+```{r}
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species, shape = species)) +
+  labs(title = "Flipper length in mm vs. body mass in g") +
+  geom_smooth(mapping = aes(x = flipper_length_mm, y = body_mass_g))
+```
+
+
+## Plotting Species and count of species
+
+What is the count of penguins species?
+
+Count of species:
+Adelie = 152
+Chinstrap = 68 
+Gentoo = 124
+
+```{r}
+ggplot(data = penguins) +
+  geom_bar(mapping = aes(x = species)) +
+  labs(title = "Species vs. Count of species") 
+```
+
+## Installing and loading dplyr package
+
+```{r}
+install.packages("dplyr")
+library(dplyr)
+```
+
+## Plotting bill length and bill depth
+
+What is the relationship between penguins bill length and bill depth?
+
+There is no relation between penguins bill length and bill depth.
+
+```{r}
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_smooth(mapping = aes(x = bill_length_mm, y = bill_depth_mm)) +
+  labs(title = "Bill length in mm vs. bill depth in mm")
+```
